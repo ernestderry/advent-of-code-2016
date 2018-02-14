@@ -3,12 +3,12 @@ package day1;
 public class TaxiCab {
 
 	int x, y;
-	direction direction;
+	Direction direction;
 
 	public TaxiCab() {
 		x = 0;
 		y = 0;
-		direction = direction.North;
+		direction = Direction.North;
 	}
 
 	public void drive(String instruction) {
@@ -19,22 +19,22 @@ public class TaxiCab {
 
 			switch (direction) {
 			case North:
-				direction = direction.East;
+				direction = Direction.East;
 				x += distance;
 				break;
 
 			case East:
-				direction = direction.South;
+				direction = Direction.South;
 				y += distance;
 				break;
 
 			case South:
-				direction = direction.West;
+				direction = Direction.West;
 				x -= distance;
 				break;
 
 			case West:
-				direction = direction.North;
+				direction = Direction.North;
 				y -= distance;
 				break;
 			}
@@ -42,22 +42,22 @@ public class TaxiCab {
 		} else {
 			switch (direction) {
 			case North:
-				direction = direction.West;
+				direction = Direction.West;
 				x -= distance;
 				break;
 				
 			case East:
-				direction = direction.North;
+				direction = Direction.North;
 				y -= distance;
 				break;
 
 			case South:
-				direction = direction.East;
+				direction = Direction.East;
 				x += distance;
 				break;
 				
 			case West:
-				direction = direction.South;
+				direction = Direction.South;
 				y += distance;
 				break;
 			}

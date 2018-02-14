@@ -1,5 +1,5 @@
 package day1;
 
-public enum direction {North, East, South, West
+public enum Direction {North, East, South, West
 
 }
