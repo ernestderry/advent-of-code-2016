@@ -3,7 +3,6 @@ package day1b;
 import java.util.ArrayList;
 
 import day1b.Location;
-import javafx.util.Pair;
 
 public class TaxiCab {
 
@@ -11,7 +10,7 @@ public class TaxiCab {
 	Direction direction;
 	ArrayList<Location> locations;
 	Location firstRepeatedLocation;
-
+	
 	public TaxiCab() {
 		currentLocation = new Location(0, 0);
 		direction = Direction.North;
@@ -21,9 +20,6 @@ public class TaxiCab {
 	public void drive(String instruction) {
 		char turn = instruction.charAt(0);
 		int distance = Integer.parseInt(instruction.substring(1, instruction.length()));
-
-		int x = currentLocation.getX();
-		int y = currentLocation.getY();
 
 		if (turn == 'R') {
 
@@ -94,18 +90,9 @@ public class TaxiCab {
 			
 			distance--;
 		}
-
-
 	}
 
 	private void checkIfVisitedLocationBefore() {
-		
-		System.out.println("checking "+currentLocation.toString());
-		String locOut = "";
-		for (Location loc:locations){
-			locOut += " "+loc.toString();
-		}
-		System.out.println(locOut);				
 		
 		if (locations.contains(currentLocation)) {
 			if (firstRepeatedLocation == null) {
@@ -116,15 +103,19 @@ public class TaxiCab {
 		}
 	}
 
-	public int distance() {
-		return Math.abs(currentLocation.getX()) + Math.abs(currentLocation.getY());
+ 	public int distance() {
+		return distance(currentLocation);
+	}
+
+	private int distance(Location location) {
+		return Math.abs(location.getX()) + Math.abs(location.getY());		
 	}
 
 	public int distanceToFirstLocationVisitedTwice() {
 		if (firstRepeatedLocation == null) {
 			return -1;
 		}
-		return Math.abs(firstRepeatedLocation.getX()) + Math.abs(firstRepeatedLocation.getY());
+		return distance(firstRepeatedLocation);
 	}
 
 }
