@@ -1,6 +1,7 @@
 package day1b;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import day1b.Location;
 
@@ -10,11 +11,22 @@ public class TaxiCab {
 	Direction direction;
 	ArrayList<Location> locations;
 	Location firstRepeatedLocation;
-	
+	HashMap<Direction, Direction> turnRight = new HashMap<Direction, Direction>();
+	HashMap<Direction, Direction> turnLeft = new HashMap<Direction, Direction>();
+		
 	public TaxiCab() {
 		currentLocation = new Location(0, 0);
 		direction = Direction.North;
 		locations = new ArrayList<Location>();
+		
+		turnRight.put(Direction.North, Direction.East);
+		turnRight.put(Direction.East, Direction.South);
+		turnRight.put(Direction.South, Direction.West);
+		turnRight.put(Direction.West, Direction.North);	
+		turnLeft.put(Direction.North, Direction.West);
+		turnLeft.put(Direction.East, Direction.North);
+		turnLeft.put(Direction.South, Direction.East);
+		turnLeft.put(Direction.West, Direction.South);			
 	}
 
 	public void drive(String instruction) {
@@ -22,43 +34,9 @@ public class TaxiCab {
 		int distance = Integer.parseInt(instruction.substring(1, instruction.length()));
 
 		if (turn == 'R') {
-
-			switch (direction) {
-			case North:
-				direction = Direction.East;
-				break;
-
-			case East:
-				direction = Direction.South;
-				break;
-
-			case South:
-				direction = Direction.West;
-				break;
-
-			case West:
-				direction = Direction.North;
-				break;
-			}
-
+			direction = turnRight.get(direction);
 		} else {
-			switch (direction) {
-			case North:
-				direction = Direction.West;
-				break;
-
-			case East:
-				direction = Direction.North;
-				break;
-
-			case South:
-				direction = Direction.East;
-				break;
-
-			case West:
-				direction = Direction.South;
-				break;
-			}
+			direction = turnLeft.get(direction);
 		}
 
 		move(distance, direction);
