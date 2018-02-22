@@ -56,12 +56,12 @@ public class TestKeyPad {
 
 	@Test
 	public void rightTwiceFromMiddleDoesNotCrash() {		
-		assertEquals(4, kp.calcButton("LL"));
+		assertEquals(6, kp.calcButton("RR"));
 	}
 
 	@Test
 	public void downTwiceFromMiddleDoesNotCrash() {		
-		assertEquals(4, kp.calcButton("LL"));
+		assertEquals(8, kp.calcButton("DD"));
 	}
 	
 	@Test
