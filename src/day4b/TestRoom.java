@@ -96,4 +96,24 @@ public class TestRoom {
 		assertEquals("d", Room.decriptRoom("b-2[b]"));
 	}
 
+	@Test 
+	public void decriptNameUsingSector26() {
+		assertEquals("a", Room.decriptRoom("a-26[a]"));
+	}
+
+	@Test 
+	public void decriptNameUsingSector53() {
+		assertEquals("b", Room.decriptRoom("a-53[a]"));
+	}
+	
+	@Test 
+	public void decriptMultipleCharNameUsingSector1() {
+		assertEquals("bcdef", Room.decriptRoom("abcde-53[abcde]"));
+	}
+
+	@Test 
+	public void decriptHyphonsIntoSpaces() {
+		assertEquals("bc de f", Room.decriptRoom("ab-cd-e-53[abcde]"));
+	}
+	
 }

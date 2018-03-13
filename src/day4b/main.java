@@ -9,24 +9,19 @@ public class main {
 	public static void main(String[] args) {
 		
 		BufferedReader reader;
-		int sectorTotal = 0;
 				
 		try {
 			reader = new BufferedReader(new FileReader("./src/day4b/puzzle.txt"));
 			String line = reader.readLine();
 			while (line != null) {
-				System.out.println(line);
 				if (Room.isReal(line)) {
-					sectorTotal += Room.getSector(line);
+					System.out.println(Room.decriptRoom(line) + " " + Room.getSector(line));;
 				}
 
 				line = reader.readLine();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
-		System.out.println("answer " + sectorTotal);
-		
+		}				
 	}
 }

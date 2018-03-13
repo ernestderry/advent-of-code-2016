@@ -103,14 +103,27 @@ public class Room {
 		String nameParts = getNameParts(room);
 		int sector = getSector(room);
 
-		char x = nameParts.charAt(0);
-		for (int i = 0; i < sector; i++) {
-			Character y = ++x;
-			x = y.charValue();
+		String decryptedName = "";
+		for (char x : nameParts.toCharArray()) {
+			if (x == '-') {
+				decryptedName += ' ';
+			} else {
+				decryptedName += shiftChar(sector, x);
+			}
 		}
-		
-		return String.valueOf(x);
 
+		return decryptedName;
+
+	}
+
+	private static char shiftChar(int sector, char x) {
+		for (int i = 0; i < sector; i++) {
+			x++;
+			if (x == 123) {
+				x = 97;
+			}
+		}
+		return x;
 	}
 
 }
