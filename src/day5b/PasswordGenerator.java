@@ -16,18 +16,16 @@ public class PasswordGenerator {
 
 	public String generatePassword(String doorId, int passwordLength) {
 
-		String hash;
 		boolean isComplete = false;
-
 		HashMap<Integer, Character> passwordMap = new HashMap<Integer, Character>();
 		int i = 0;
+
 		while (!isComplete) {
-
-			hash = hashGenerator.genHash(doorId + i);
+			String hash = hashGenerator.genHash(doorId + i);
 			if (hash.startsWith("00000")) {
-				try {
-					int passwordCharIndex = Integer.parseInt(hash.substring(5, 6));
-
+				char indexChar = hash.charAt(5);
+				if (Character.isDigit(indexChar)) {
+					int passwordCharIndex = Character.getNumericValue(indexChar);
 					if (passwordCharIndex < passwordLength) {
 						char passwordCharacter = hash.charAt(6);
 						if (!passwordMap.containsKey(passwordCharIndex)) {
@@ -35,7 +33,6 @@ public class PasswordGenerator {
 							System.out.println("adding " + passwordCharacter + " to position " + passwordCharIndex);
 						}
 					}
-				} catch (NumberFormatException e) {
 				}
 			}
 
@@ -53,6 +50,7 @@ public class PasswordGenerator {
 		for (int p = 0; p < passwordLength; p++) {
 			result += passwordMap.get(p);
 		}
+		
 		return result;
 	}
 }
