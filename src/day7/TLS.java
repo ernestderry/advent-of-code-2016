@@ -1,8 +1,8 @@
 package day7;
 
-public class Abba {
+public class TLS {
 
-	public static boolean isAbba(String ip) {
+	public static boolean isTLS(String ip) {
 
 		if (ip == null || ip == "") {
 			return false;
@@ -11,7 +11,7 @@ public class Abba {
 		StringBuffer ipSB = new StringBuffer(ip);
 		int pos = 0;
 		boolean insideHypernet = false;		
-		boolean isAbba = false;
+		boolean isTLS = false;
 		while (pos <= ipSB.length() - 4) {
 			
 			if ("[".equals(ipSB.substring(pos, pos+1))) {
@@ -32,14 +32,14 @@ public class Abba {
 				if (insideHypernet) {
 					return false;
 				} else {
-					isAbba = true;
+					isTLS = true;
 				}
 			}
 
 			pos++;
 		}
 
-		return isAbba;
+		return isTLS;
 	}
 
 	private static boolean isPallindromeString(String candidatePallindrome) {

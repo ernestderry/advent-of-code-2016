@@ -14,7 +14,7 @@ public class main {
 			reader = new BufferedReader(new FileReader("./src/day7/puzzle.txt"));
 			String line = reader.readLine();
 			while (line != null) {
-				if (Abba.isAbba(line)) {
+				if (TLS.isTLS(line)) {
 					System.out.println("yes");
 					abbaCount++;
 				}
