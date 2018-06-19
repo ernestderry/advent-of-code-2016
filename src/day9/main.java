@@ -20,13 +20,11 @@ public class main {
 			System.out.println(line.length());
 			System.out.println("after");
 			String decompressedString = StringFormatter.decompress(line);
-			System.out.println(decompressedString.length());
-					
+			System.out.println(decompressedString.length());					
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

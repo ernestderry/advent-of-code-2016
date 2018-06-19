@@ -1,10 +1,5 @@
 package day9;
 
-import java.text.CharacterIterator;
-import java.text.StringCharacterIterator;
-import java.util.Iterator;
-import java.util.Map;
-
 public class StringFormatter {
 
 	public static String decompress(String unCompressedString) {
