@@ -2,14 +2,14 @@ package day9b;
 
 public class StringFormatter {
 
-	public static int decompressedLength(String unCompressedString) {
+	public static long decompressedLength(String unCompressedString) {
 
 		String cleanString = unCompressedString.replace("\n", "");
 		cleanString = cleanString.replace("\r", "");
 		cleanString = cleanString.replace(" ", "");
 
 		char[] characters = cleanString.toCharArray();
-		int decodedLength = 0;
+		long decodedLength = 0;
 
 		int c = 0;
 		while (c < characters.length) {
@@ -30,7 +30,7 @@ public class StringFormatter {
 					compressedChars.append(characters[c]);
 					c++;
 				}
-				decodedLength += repeat(compressedChars, numberOfCompressions).length();
+				decodedLength += decompressedLength(repeat(compressedChars, numberOfCompressions));
 			} else {
 				decodedLength += 1;
 				c++;

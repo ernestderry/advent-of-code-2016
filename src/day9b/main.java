@@ -19,15 +19,13 @@ public class main {
 			System.out.println("before");
 			System.out.println(line.length());
 			System.out.println("after");
-//			String decompressedString = StringFormatter.decompressedLength(line);
-//			System.out.println(decompressedString.length());					
+			double decompressedStringLength = StringFormatter.decompressedLength(line);
+			System.out.println(decompressedStringLength);					
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 }
