@@ -2,8 +2,8 @@ package day10;
 
 public class Output extends Receiver {
 
-	Integer value;
-	int outputNumber;
+	private Integer value;
+	private int outputNumber;
 	
 	public Output(int outputNumber) {
 		this.outputNumber = outputNumber;

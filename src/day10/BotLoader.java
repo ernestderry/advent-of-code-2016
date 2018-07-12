@@ -44,6 +44,33 @@ public class BotLoader {
 		}
 	}
 
+	public Bot getBot(int i) {
+		return getOrCreateBot(i);
+	}
+
+	public Output getOutput(int i) {
+		return getOrCreateOutput(i);
+	}
+
+	public void iterate() {
+		int previousBotProcessedCount = -1;
+		int processedBots = 0;
+
+		do {
+			previousBotProcessedCount = processedBots;
+			processedBots = 0;
+			for (Bot bot : bots) {
+				if (bot != null) {
+					bot.process();
+
+					if (bot.getProcessed()) {
+						processedBots += 1;
+					}
+				}
+			}
+		} while (processedBots != previousBotProcessedCount);
+	}
+	
 	private Bot getOrCreateBot(int botNumber) {
 		Bot bot = bots[botNumber];
 		if (bot == null) {
@@ -61,50 +88,4 @@ public class BotLoader {
 		}
 		return output;
 	}
-
-	public Bot getBot(int i) {
-		return getOrCreateBot(i);
-	}
-
-	public Output getOutput(int i) {
-		return getOrCreateOutput(i);
-	}
-
-	public void iterate() {
-
-		int previousBotProcessedCount = -1;
-		int processedBots = 0;
-
-		while (processedBots != previousBotProcessedCount) {
-			previousBotProcessedCount = processedBots;
-			processedBots = 0;
-			for (Bot bot : bots) {
-				if (bot != null) {
-//					System.out.println("processing bot " + bot.getNumber());
-					if (bot.getValue(2) != null && !bot.getProcessed()) {
-						if (bot.getValue(1) > bot.getValue(2)) {
-							System.out.println("bot " + bot.getNumber() + " gives " + bot.getValue(1) + " to "
-									+ bot.getHighReceiver().getNumber());
-							System.out.println("bot " + bot.getNumber() + " gives " + bot.getValue(2) + " to "
-									+ bot.getLowReceiver().getNumber());
-							bot.getHighReceiver().setValue(bot.getValue(1));
-							bot.getLowReceiver().setValue(bot.getValue(2));
-						} else {
-							System.out.println("bot " + bot.getNumber() + " gives " + bot.getValue(2) + " to "
-									+ bot.getHighReceiver().getNumber());
-							System.out.println("bot " + bot.getNumber() + " gives " + bot.getValue(1) + " to "
-									+ bot.getLowReceiver().getNumber());
-							bot.getHighReceiver().setValue(bot.getValue(2));
-							bot.getLowReceiver().setValue(bot.getValue(1));
-						}
-						bot.setProcessed();
-					}
-					if (bot.getProcessed()) {
-						processedBots += 1;
-					}
-				}
-			}
-		}
-	}
-
 }
