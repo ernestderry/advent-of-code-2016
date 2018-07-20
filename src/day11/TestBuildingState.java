@@ -12,142 +12,142 @@ public class TestBuildingState {
 	public void createEmptyBuildingState() {
 		BuildingState bs = new BuildingState(1);
 		assertEquals(1, bs.getElevatorFloor());
-		assertEquals(0, bs.getRTGFloorPairs().size());
+		assertEquals(0, bs.getChipPairs().size());
 	}
 
 	@Test
-	public void addOneRTGFloorPairToBuildingState() {
+	public void addOneChipPairToBuildingState() {
 		BuildingState bs = new BuildingState(1);
 
-		RTGFloorPair fp = new RTGFloorPair(1, 2);
-		bs.addRTGFloorPair(fp);
-		assertEquals(1, bs.getRTGFloorPairs().size());
-		assertEquals(fp, bs.getRTGFloorPairs().get(0));
+		ChipPair cp = new ChipPair(1, 2);
+		bs.addChipPair(cp);
+		assertEquals(1, bs.getChipPairs().size());
+		assertEquals(cp, bs.getChipPairs().get(0));
 	}
 
 	@Test
-	public void addRTGFloorPairWithHigherGeneratorToBuildingState() {
+	public void addChipPairWithHigherGeneratorToBuildingState() {
 		BuildingState bs = new BuildingState(1);
 
-		RTGFloorPair fp = new RTGFloorPair(2, 2);
-		bs.addRTGFloorPair(fp);
-		RTGFloorPair fp2 = new RTGFloorPair(3, 2);
-		bs.addRTGFloorPair(fp2);
-		assertEquals(2, bs.getRTGFloorPairs().size());
-		assertEquals(fp, bs.getRTGFloorPairs().get(0));
-		assertEquals(fp2, bs.getRTGFloorPairs().get(1));
+		ChipPair cp = new ChipPair(2, 2);
+		bs.addChipPair(cp);
+		ChipPair cp2 = new ChipPair(3, 2);
+		bs.addChipPair(cp2);
+		assertEquals(2, bs.getChipPairs().size());
+		assertEquals(cp, bs.getChipPairs().get(0));
+		assertEquals(cp2, bs.getChipPairs().get(1));
 	}
 
 	@Test
-	public void addRTGFloorPairWithLowerGeneratorToBuildingState() {
+	public void addChipPairWithLowerGeneratorToBuildingState() {
 		BuildingState bs = new BuildingState(1);
 
-		RTGFloorPair fp = new RTGFloorPair(2, 2);
-		bs.addRTGFloorPair(fp);
-		RTGFloorPair fp2 = new RTGFloorPair(1, 2);
-		bs.addRTGFloorPair(fp2);
-		assertEquals(2, bs.getRTGFloorPairs().size());
-		assertEquals(fp2, bs.getRTGFloorPairs().get(0));
-		assertEquals(fp, bs.getRTGFloorPairs().get(1));
+		ChipPair cp = new ChipPair(2, 2);
+		bs.addChipPair(cp);
+		ChipPair cp2 = new ChipPair(1, 2);
+		bs.addChipPair(cp2);
+		assertEquals(2, bs.getChipPairs().size());
+		assertEquals(cp2, bs.getChipPairs().get(0));
+		assertEquals(cp, bs.getChipPairs().get(1));
 	}
 
 	@Test
-	public void addRTGFloorPairWithHigherMicrochipToBuildingState() {
+	public void addChipPairWithHigherMicrochipToBuildingState() {
 		BuildingState bs = new BuildingState(1);
 
-		RTGFloorPair fp = new RTGFloorPair(2, 2);
-		bs.addRTGFloorPair(fp);
-		RTGFloorPair fp2 = new RTGFloorPair(2, 3);
-		bs.addRTGFloorPair(fp2);
-		assertEquals(2, bs.getRTGFloorPairs().size());
-		assertEquals(fp, bs.getRTGFloorPairs().get(0));
-		assertEquals(fp2, bs.getRTGFloorPairs().get(1));
+		ChipPair cp = new ChipPair(2, 2);
+		bs.addChipPair(cp);
+		ChipPair cp2 = new ChipPair(2, 3);
+		bs.addChipPair(cp2);
+		assertEquals(2, bs.getChipPairs().size());
+		assertEquals(cp, bs.getChipPairs().get(0));
+		assertEquals(cp2, bs.getChipPairs().get(1));
 	}
 
 	@Test
-	public void addRTGFloorPairWithLowerMicrochipToBuildingState() {
+	public void addChipPairWithLowerMicrochipToBuildingState() {
 		BuildingState bs = new BuildingState(1);
 
-		RTGFloorPair fp = new RTGFloorPair(2, 2);
-		bs.addRTGFloorPair(fp);
-		RTGFloorPair fp2 = new RTGFloorPair(2, 1);
-		bs.addRTGFloorPair(fp2);
-		assertEquals(2, bs.getRTGFloorPairs().size());
-		assertEquals(fp2, bs.getRTGFloorPairs().get(0));
-		assertEquals(fp, bs.getRTGFloorPairs().get(1));
+		ChipPair cp = new ChipPair(2, 2);
+		bs.addChipPair(cp);
+		ChipPair cp2 = new ChipPair(2, 1);
+		bs.addChipPair(cp2);
+		assertEquals(2, bs.getChipPairs().size());
+		assertEquals(cp2, bs.getChipPairs().get(0));
+		assertEquals(cp, bs.getChipPairs().get(1));
 	}
 
 	@Test
-	public void addMultipleRTGFloorPairsToBuildingState() {
+	public void addMultipleChipPairsToBuildingState() {
 		BuildingState bs = new BuildingState(1);
 
-		RTGFloorPair fp0 = new RTGFloorPair(2, 2);
-		bs.addRTGFloorPair(fp0);
-		RTGFloorPair fp1 = new RTGFloorPair(2, 1);
-		bs.addRTGFloorPair(fp1);
-		RTGFloorPair fp2 = new RTGFloorPair(1, 1);
-		bs.addRTGFloorPair(fp2);
-		RTGFloorPair fp3 = new RTGFloorPair(3, 3);
-		bs.addRTGFloorPair(fp3);
-		RTGFloorPair fp4 = new RTGFloorPair(3, 2);
-		bs.addRTGFloorPair(fp4);
-		RTGFloorPair fp5 = new RTGFloorPair(1, 1);
-		bs.addRTGFloorPair(fp5);
-		RTGFloorPair fp6 = new RTGFloorPair(3, 2);
-		bs.addRTGFloorPair(fp6);
-		RTGFloorPair fp7 = new RTGFloorPair(2, 0);
-		bs.addRTGFloorPair(fp7);
-		assertEquals(8, bs.getRTGFloorPairs().size());
-		assertEquals(fp2, bs.getRTGFloorPairs().get(0));
-		assertEquals(fp5, bs.getRTGFloorPairs().get(1));
-		assertEquals(fp7, bs.getRTGFloorPairs().get(2));
-		assertEquals(fp1, bs.getRTGFloorPairs().get(3));
-		assertEquals(fp0, bs.getRTGFloorPairs().get(4));
-		assertEquals(fp4, bs.getRTGFloorPairs().get(5));
-		assertEquals(fp6, bs.getRTGFloorPairs().get(6));
-		assertEquals(fp3, bs.getRTGFloorPairs().get(7));
+		ChipPair cp0 = new ChipPair(2, 2);
+		bs.addChipPair(cp0);
+		ChipPair cp1 = new ChipPair(2, 1);
+		bs.addChipPair(cp1);
+		ChipPair cp2 = new ChipPair(1, 1);
+		bs.addChipPair(cp2);
+		ChipPair cp3 = new ChipPair(3, 3);
+		bs.addChipPair(cp3);
+		ChipPair cp4 = new ChipPair(3, 2);
+		bs.addChipPair(cp4);
+		ChipPair cp5 = new ChipPair(1, 1);
+		bs.addChipPair(cp5);
+		ChipPair cp6 = new ChipPair(3, 2);
+		bs.addChipPair(cp6);
+		ChipPair cp7 = new ChipPair(2, 0);
+		bs.addChipPair(cp7);
+		assertEquals(8, bs.getChipPairs().size());
+		assertEquals(cp2, bs.getChipPairs().get(0));
+		assertEquals(cp5, bs.getChipPairs().get(1));
+		assertEquals(cp7, bs.getChipPairs().get(2));
+		assertEquals(cp1, bs.getChipPairs().get(3));
+		assertEquals(cp0, bs.getChipPairs().get(4));
+		assertEquals(cp4, bs.getChipPairs().get(5));
+		assertEquals(cp6, bs.getChipPairs().get(6));
+		assertEquals(cp3, bs.getChipPairs().get(7));
 	}
 
 	@Test
 	public void validStatesForPairOnFloor1() {
 		BuildingState bs = new BuildingState(1);
-		RTGFloorPair fp = new RTGFloorPair(1, 1);
-		bs.addRTGFloorPair(fp);
+		ChipPair cp = new ChipPair(1, 1);
+		bs.addChipPair(cp);
 		ArrayList<BuildingState> nextStates = bs.getValidNextStates();
 
 		BuildingState expectedState = new BuildingState(2);
-		fp = new RTGFloorPair(2, 1);
-		expectedState.addRTGFloorPair(fp);
+		cp = new ChipPair(2, 1);
+		expectedState.addChipPair(cp);
 		assertTrue(nextStatesContainsState(nextStates, expectedState));
 
 		expectedState = new BuildingState(2);
-		fp = new RTGFloorPair(1, 2);
-		expectedState.addRTGFloorPair(fp);
+		cp = new ChipPair(1, 2);
+		expectedState.addChipPair(cp);
 		assertTrue(nextStatesContainsState(nextStates, expectedState));
 	}
 	
 	@Test
 	public void validStatesFor2PairsOnFloor1() {
 		BuildingState bs = new BuildingState(1);
-		RTGFloorPair fp = new RTGFloorPair(1, 1);
-		bs.addRTGFloorPair(fp);
+		ChipPair cp = new ChipPair(1, 1);
+		bs.addChipPair(cp);
 		
-		fp = new RTGFloorPair(1, 1);
-		bs.addRTGFloorPair(fp);
+		cp = new ChipPair(1, 1);
+		bs.addChipPair(cp);
 		ArrayList<BuildingState> nextStates = bs.getValidNextStates();		
 
 		BuildingState expectedState = new BuildingState(2);
-		fp = new RTGFloorPair(2, 1);
-		expectedState.addRTGFloorPair(fp);
-		fp = new RTGFloorPair(1, 1);
-		expectedState.addRTGFloorPair(fp);
+		cp = new ChipPair(2, 1);
+		expectedState.addChipPair(cp);
+		cp = new ChipPair(1, 1);
+		expectedState.addChipPair(cp);
 		assertTrue(nextStatesContainsState(nextStates, expectedState));
 
 		expectedState = new BuildingState(2);
-		fp = new RTGFloorPair(1, 2);
-		expectedState.addRTGFloorPair(fp);
-		fp = new RTGFloorPair(1, 1);
-		expectedState.addRTGFloorPair(fp);
+		cp = new ChipPair(1, 2);
+		expectedState.addChipPair(cp);
+		cp = new ChipPair(1, 1);
+		expectedState.addChipPair(cp);
 		assertTrue(nextStatesContainsState(nextStates, expectedState));
 	}
 

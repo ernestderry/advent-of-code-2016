@@ -2,12 +2,12 @@ package day11;
 
 import java.util.Objects;
 
-public class RTGFloorPair implements Comparable<RTGFloorPair>, Cloneable {
+public class ChipPair implements Comparable<ChipPair>, Cloneable {
 
 	int generatorFloor;
 	int microchipFloor;
 	
-	public RTGFloorPair(int g, int m) {
+	public ChipPair(int g, int m) {
 		this.generatorFloor = g;
 		this.microchipFloor = m;
 	}
@@ -23,11 +23,11 @@ public class RTGFloorPair implements Comparable<RTGFloorPair>, Cloneable {
 	@Override
 	public boolean equals(Object o) {
 		
-		if (!(o instanceof RTGFloorPair)) {
+		if (!(o instanceof ChipPair)) {
 			return false;
 		}
 		
-		RTGFloorPair pair2 = (RTGFloorPair) o;
+		ChipPair pair2 = (ChipPair) o;
 		
 		return microchipFloor == pair2.getMicrochipFloor() && generatorFloor == pair2.getGeneratorFloor();		
 	}
@@ -38,7 +38,7 @@ public class RTGFloorPair implements Comparable<RTGFloorPair>, Cloneable {
 	}
 
 	@Override
-	public int compareTo(RTGFloorPair pair2) {
+	public int compareTo(ChipPair pair2) {
 		
 		if (equals(pair2)) {
 			return 0;
@@ -52,7 +52,7 @@ public class RTGFloorPair implements Comparable<RTGFloorPair>, Cloneable {
 	
 	@Override
 	public Object clone() {
-		return new RTGFloorPair(getGeneratorFloor(), getMicrochipFloor());
+		return new ChipPair(getGeneratorFloor(), getMicrochipFloor());
 	}
 
 }

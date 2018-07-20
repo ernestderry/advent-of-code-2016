@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class BuildingState implements Cloneable{
 
 	int elevatorFloor;
-	ArrayList<RTGFloorPair> rtgFloorPairs = new ArrayList<RTGFloorPair>();
+	ArrayList<ChipPair> chipPairs = new ArrayList<ChipPair>();
 
 	public BuildingState(int elevatorFloor) {
 		this.elevatorFloor = elevatorFloor;
@@ -17,22 +17,22 @@ public class BuildingState implements Cloneable{
 		return elevatorFloor;
 	}
 
-	public ArrayList<RTGFloorPair> getRTGFloorPairs() {
-		return rtgFloorPairs;
+	public ArrayList<ChipPair> getChipPairs() {
+		return chipPairs;
 	}
 
-	public void addRTGFloorPair(RTGFloorPair fp) {
+	public void addChipPair(ChipPair cp) {
 		int insertPos = -1;
-		for (int i = 0; i < rtgFloorPairs.size(); i++) {
-			if (fp.compareTo(rtgFloorPairs.get(i)) < 0 && insertPos == -1) {
+		for (int i = 0; i < chipPairs.size(); i++) {
+			if (cp.compareTo(chipPairs.get(i)) < 0 && insertPos == -1) {
 				insertPos = i;
 			}
 		}
 
 		if (insertPos == -1) {
-			rtgFloorPairs.add(fp);
+			chipPairs.add(cp);
 		} else {
-			rtgFloorPairs.add(insertPos, fp);
+			chipPairs.add(insertPos, cp);
 		}
 	}
 
@@ -41,22 +41,22 @@ public class BuildingState implements Cloneable{
 		ArrayList<BuildingState> nextStates = new ArrayList<BuildingState>();
 		
 		BuildingState bs = (BuildingState) clone();
-		RTGFloorPair fp = bs.getRTGFloorPairs().get(0);
-		bs.getRTGFloorPairs().remove(0);
+		ChipPair cp = bs.getChipPairs().get(0);
+		bs.getChipPairs().remove(0);
 		
-		RTGFloorPair newFp1 = new RTGFloorPair(fp.getGeneratorFloor()+1, fp.getMicrochipFloor());
+		ChipPair newFp1 = new ChipPair(cp.getGeneratorFloor()+1, cp.getMicrochipFloor());
 		
-		bs.addRTGFloorPair(newFp1);
+		bs.addChipPair(newFp1);
 		bs.elevatorFloor += 1;
 		nextStates.add(bs);
 		
 		bs = (BuildingState) clone();
-		fp = bs.getRTGFloorPairs().get(0);
-		bs.getRTGFloorPairs().remove(0);
+		cp = bs.getChipPairs().get(0);
+		bs.getChipPairs().remove(0);
 		
-		RTGFloorPair newFp2 = new RTGFloorPair(fp.getGeneratorFloor(), fp.getMicrochipFloor()+1);
+		ChipPair newFp2 = new ChipPair(cp.getGeneratorFloor(), cp.getMicrochipFloor()+1);
 		
-		bs.addRTGFloorPair(newFp2);		
+		bs.addChipPair(newFp2);		
 		bs.elevatorFloor += 1;
 		nextStates.add(bs);		
 		
@@ -67,8 +67,8 @@ public class BuildingState implements Cloneable{
 	public String toString() {
 		String printString =  "{" + elevatorFloor + " ";
 		
-		for (RTGFloorPair fp : rtgFloorPairs) {
-			printString += "(" + fp.getGeneratorFloor() + " " + fp.getMicrochipFloor() + ") ";
+		for (ChipPair cp : chipPairs) {
+			printString += "(" + cp.getGeneratorFloor() + " " + cp.getMicrochipFloor() + ") ";
 		}
 		
 		printString += "}";
@@ -85,14 +85,14 @@ public class BuildingState implements Cloneable{
 		
 		BuildingState bs2 = (BuildingState) o;
 		
-		return (bs2.getElevatorFloor() == getElevatorFloor()) && bs2.getRTGFloorPairs().equals(getRTGFloorPairs());		
+		return (bs2.getElevatorFloor() == getElevatorFloor()) && bs2.getChipPairs().equals(getChipPairs());		
 	}
 
 	@Override
 	public Object clone() {
 		BuildingState bs = new BuildingState(getElevatorFloor());
-		for (RTGFloorPair fp : getRTGFloorPairs()) {
-			bs.addRTGFloorPair((RTGFloorPair) fp.clone());
+		for (ChipPair cp : getChipPairs()) {
+			bs.addChipPair((ChipPair) cp.clone());
 		}
 		return bs;
 	}
