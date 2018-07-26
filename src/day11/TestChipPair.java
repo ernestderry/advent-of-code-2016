@@ -32,9 +32,6 @@ public class TestChipPair {
 		ChipPair pair = new ChipPair(1, 2);
 		ChipPair pair2 = new ChipPair(1, 3);
 		assertNotEquals(pair, pair2);
-	}
-	
-	
-	
+	}	
 
 }

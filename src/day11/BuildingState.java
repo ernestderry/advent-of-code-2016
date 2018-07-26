@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-public class BuildingState implements Cloneable{
+public class BuildingState implements Cloneable {
 
 	int elevatorFloor;
 	ArrayList<ChipPair> chipPairs = new ArrayList<ChipPair>();
@@ -39,53 +39,88 @@ public class BuildingState implements Cloneable{
 	public ArrayList<BuildingState> getValidNextStates() {
 
 		ArrayList<BuildingState> nextStates = new ArrayList<BuildingState>();
-		
-		BuildingState bs = (BuildingState) clone();
-		ChipPair cp = bs.getChipPairs().get(0);
-		bs.getChipPairs().remove(0);
-		
-		ChipPair newFp1 = new ChipPair(cp.getGeneratorFloor()+1, cp.getMicrochipFloor());
-		
-		bs.addChipPair(newFp1);
-		bs.elevatorFloor += 1;
-		nextStates.add(bs);
-		
-		bs = (BuildingState) clone();
-		cp = bs.getChipPairs().get(0);
-		bs.getChipPairs().remove(0);
-		
-		ChipPair newFp2 = new ChipPair(cp.getGeneratorFloor(), cp.getMicrochipFloor()+1);
-		
-		bs.addChipPair(newFp2);		
-		bs.elevatorFloor += 1;
-		nextStates.add(bs);		
-		
+		BuildingState bs;
+		ChipPair cp = getChipPairs().get(0);
+
+		if (elevatorFloor > 1) {
+
+			if (elevatorFloor == cp.getGeneratorFloor()) {
+				bs = (BuildingState) clone();
+				bs.getChipPairs().remove(0);
+
+				ChipPair newFp1 = new ChipPair(cp.getGeneratorFloor() - 1, cp.getMicrochipFloor());
+
+				bs.addChipPair(newFp1);
+				bs.elevatorFloor -= 1;
+				nextStates.add(bs);
+			}
+
+			if (elevatorFloor == cp.getMicrochipFloor()) {
+				bs = (BuildingState) clone();
+				bs.getChipPairs().remove(0);
+
+				ChipPair newFp2 = new ChipPair(cp.getGeneratorFloor(), cp.getMicrochipFloor() - 1);
+
+				bs.addChipPair(newFp2);
+				bs.elevatorFloor -= 1;
+				nextStates.add(bs);
+			}
+
+		}
+
+		if (elevatorFloor < 4) {
+
+			if (elevatorFloor == cp.getGeneratorFloor()) {
+				bs = (BuildingState) clone();
+				bs.getChipPairs().remove(0);
+
+				ChipPair newFp1 = new ChipPair(cp.getGeneratorFloor() + 1, cp.getMicrochipFloor());
+
+				bs.addChipPair(newFp1);
+				bs.elevatorFloor += 1;
+
+				nextStates.add(bs);
+			}
+
+			if (elevatorFloor == cp.getMicrochipFloor()) {
+				bs = (BuildingState) clone();
+				bs.getChipPairs().remove(0);
+
+				ChipPair newFp2 = new ChipPair(cp.getGeneratorFloor(), cp.getMicrochipFloor() + 1);
+
+				bs.addChipPair(newFp2);
+				bs.elevatorFloor += 1;
+				nextStates.add(bs);
+			}
+
+		}
+
 		return nextStates;
 	}
 
 	@Override
 	public String toString() {
-		String printString =  "{" + elevatorFloor + " ";
-		
+		String printString = "{" + elevatorFloor + " ";
+
 		for (ChipPair cp : chipPairs) {
 			printString += "(" + cp.getGeneratorFloor() + " " + cp.getMicrochipFloor() + ") ";
 		}
-		
+
 		printString += "}";
-		
+
 		return printString;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		
+
 		if (!(o instanceof BuildingState)) {
 			return false;
 		}
-		
+
 		BuildingState bs2 = (BuildingState) o;
-		
-		return (bs2.getElevatorFloor() == getElevatorFloor()) && bs2.getChipPairs().equals(getChipPairs());		
+
+		return (bs2.getElevatorFloor() == getElevatorFloor()) && bs2.getChipPairs().equals(getChipPairs());
 	}
 
 	@Override
