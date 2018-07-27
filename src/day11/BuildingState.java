@@ -45,14 +45,17 @@ public class BuildingState implements Cloneable {
 		if (elevatorFloor > 1) {
 
 			if (elevatorFloor == cp.getGeneratorFloor()) {
+
 				bs = (BuildingState) clone();
 				bs.getChipPairs().remove(0);
 
-				ChipPair newFp1 = new ChipPair(cp.getGeneratorFloor() - 1, cp.getMicrochipFloor());
+				if (!floorContainsGenerator(bs, elevatorFloor)) {
+					ChipPair newFp1 = new ChipPair(cp.getGeneratorFloor() - 1, cp.getMicrochipFloor());
 
-				bs.addChipPair(newFp1);
-				bs.elevatorFloor -= 1;
-				nextStates.add(bs);
+					bs.addChipPair(newFp1);
+					bs.elevatorFloor -= 1;
+					nextStates.add(bs);
+				}
 			}
 
 			if (elevatorFloor == cp.getMicrochipFloor()) {
@@ -74,28 +77,41 @@ public class BuildingState implements Cloneable {
 				bs = (BuildingState) clone();
 				bs.getChipPairs().remove(0);
 
-				ChipPair newFp1 = new ChipPair(cp.getGeneratorFloor() + 1, cp.getMicrochipFloor());
+				if (!floorContainsGenerator(bs, elevatorFloor)) {
+					ChipPair newFp1 = new ChipPair(cp.getGeneratorFloor() + 1, cp.getMicrochipFloor());
 
-				bs.addChipPair(newFp1);
-				bs.elevatorFloor += 1;
+					bs.addChipPair(newFp1);
+					bs.elevatorFloor += 1;
 
-				nextStates.add(bs);
+					nextStates.add(bs);
+				}
 			}
 
 			if (elevatorFloor == cp.getMicrochipFloor()) {
 				bs = (BuildingState) clone();
 				bs.getChipPairs().remove(0);
 
-				ChipPair newFp2 = new ChipPair(cp.getGeneratorFloor(), cp.getMicrochipFloor() + 1);
+				if (!floorContainsGenerator(bs, elevatorFloor + 1)) {
+					ChipPair newFp2 = new ChipPair(cp.getGeneratorFloor(), cp.getMicrochipFloor() + 1);
 
-				bs.addChipPair(newFp2);
-				bs.elevatorFloor += 1;
-				nextStates.add(bs);
+					bs.addChipPair(newFp2);
+					bs.elevatorFloor += 1;
+					nextStates.add(bs);
+				}
 			}
 
 		}
 
 		return nextStates;
+	}
+
+	private boolean floorContainsGenerator(BuildingState bs, int elevatorFloor) {
+		for (ChipPair cp : bs.getChipPairs()) {
+			if (cp.getGeneratorFloor() == elevatorFloor) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

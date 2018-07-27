@@ -129,33 +129,6 @@ public class TestBuildingState {
 	}
 	
 	@Test
-	public void validStatesFor2PairsOnFloor1() {
-		BuildingState bs = new BuildingState(1);
-		ChipPair cp = new ChipPair(1, 1);
-		bs.addChipPair(cp);
-		
-		cp = new ChipPair(1, 1);
-		bs.addChipPair(cp);
-		ArrayList<BuildingState> nextStates = bs.getValidNextStates();	
-		
-		assertEquals(nextStates.size(), 2);
-
-		BuildingState expectedState = new BuildingState(2);
-		cp = new ChipPair(2, 1);
-		expectedState.addChipPair(cp);
-		cp = new ChipPair(1, 1);
-		expectedState.addChipPair(cp);
-		assertTrue(nextStatesContainsState(nextStates, expectedState));
-
-		expectedState = new BuildingState(2);
-		cp = new ChipPair(1, 2);
-		expectedState.addChipPair(cp);
-		cp = new ChipPair(1, 1);
-		expectedState.addChipPair(cp);
-		assertTrue(nextStatesContainsState(nextStates, expectedState));
-	}
-
-	@Test
 	public void validStatesForPairOnFloor2() {		
 		BuildingState bs = new BuildingState(2);
 		ChipPair cp = new ChipPair(2, 2);
@@ -185,45 +158,7 @@ public class TestBuildingState {
 		assertTrue(nextStatesContainsState(nextStates, expectedState));		
 	}
 
-	@Test
-	public void validStatesForTwoPairsOnFloor2() {		
-		BuildingState bs = new BuildingState(2);
-		ChipPair cp = new ChipPair(2, 2);
-		bs.addChipPair(cp);
-		cp = new ChipPair(2, 2);
-		bs.addChipPair(cp);
-		ArrayList<BuildingState> nextStates = bs.getValidNextStates();
-		
-		assertEquals(4, nextStates.size());
-		
-		BuildingState expectedState = new BuildingState(3);
-		cp = new ChipPair(3, 2);
-		expectedState.addChipPair(cp);
-		cp = new ChipPair(2, 2);
-		expectedState.addChipPair(cp);
-		assertTrue(nextStatesContainsState(nextStates, expectedState));
-		
-		expectedState = new BuildingState(3);
-		cp = new ChipPair(2, 3);
-		expectedState.addChipPair(cp);
-		cp = new ChipPair(2, 2);
-		expectedState.addChipPair(cp);
-		assertTrue(nextStatesContainsState(nextStates, expectedState));
-		
-		expectedState = new BuildingState(1);
-		cp = new ChipPair(1, 2);
-		expectedState.addChipPair(cp);
-		cp = new ChipPair(2, 2);
-		expectedState.addChipPair(cp);
-		assertTrue(nextStatesContainsState(nextStates, expectedState));
-		
-		expectedState = new BuildingState(1);
-		cp = new ChipPair(2, 1);
-		expectedState.addChipPair(cp);
-		cp = new ChipPair(2, 2);
-		expectedState.addChipPair(cp);
-		assertTrue(nextStatesContainsState(nextStates, expectedState));		
-	}
+
 
 	@Test
 	public void validStatesForPairOnFloor3() {		
@@ -344,7 +279,105 @@ public class TestBuildingState {
 		expectedState.addChipPair(cp);
 		assertTrue(nextStatesContainsState(nextStates, expectedState));
 	}
+	
+	@Test
+	public void cannotMoveGeneratorAwayFromMicrochipIfAnotherGeneratorOnFloor1() {
+		BuildingState bs = new BuildingState(1);
+		ChipPair cp = new ChipPair(1, 1);
+		bs.addChipPair(cp);
+		
+		cp = new ChipPair(1, 1);
+		bs.addChipPair(cp);
+		ArrayList<BuildingState> nextStates = bs.getValidNextStates();	
+		
+		assertEquals(nextStates.size(), 1);
 
+		BuildingState expectedState = new BuildingState(2);
+		cp = new ChipPair(1, 2);
+		expectedState.addChipPair(cp);
+		cp = new ChipPair(1, 1);
+		expectedState.addChipPair(cp);
+		assertTrue(nextStatesContainsState(nextStates, expectedState));
+	}
+
+	@Test
+	public void cannotMoveGeneratorAwayFromMicrochipIfAnotherGeneratorOnFloor2() {		
+		BuildingState bs = new BuildingState(2);
+		ChipPair cp = new ChipPair(2, 2);
+		bs.addChipPair(cp);
+		cp = new ChipPair(2, 2);
+		bs.addChipPair(cp);
+		ArrayList<BuildingState> nextStates = bs.getValidNextStates();
+		
+		assertEquals(2, nextStates.size());
+				
+		BuildingState expectedState = new BuildingState(3);
+		cp = new ChipPair(2, 3);
+		expectedState.addChipPair(cp);
+		cp = new ChipPair(2, 2);
+		expectedState.addChipPair(cp);
+		assertTrue(nextStatesContainsState(nextStates, expectedState));
+				
+		expectedState = new BuildingState(1);
+		cp = new ChipPair(2, 1);
+		expectedState.addChipPair(cp);
+		cp = new ChipPair(2, 2);
+		expectedState.addChipPair(cp);
+		assertTrue(nextStatesContainsState(nextStates, expectedState));		
+	}
+	
+	@Test
+	public void cannotMoveMicrochipToFloorWithAnotherGeneratorFromFloor1() {
+		BuildingState bs = new BuildingState(1);
+		ChipPair cp = new ChipPair(1, 1);
+		bs.addChipPair(cp);
+		
+		cp = new ChipPair(2, 2);
+		bs.addChipPair(cp);
+		ArrayList<BuildingState> nextStates = bs.getValidNextStates();	
+		
+		assertEquals(nextStates.size(), 1);
+
+		BuildingState expectedState = new BuildingState(2);
+		cp = new ChipPair(2, 1);
+		expectedState.addChipPair(cp);
+		cp = new ChipPair(2, 2);
+		expectedState.addChipPair(cp);
+		assertTrue(nextStatesContainsState(nextStates, expectedState));
+	}
+	
+//	@Test
+//	public void cannotMoveMicrochipToFloorWithAnotherGeneratorFromFloor2() {		
+//		BuildingState bs = new BuildingState(2);
+//		ChipPair cp = new ChipPair(2, 2);
+//		bs.addChipPair(cp);
+//		cp = new ChipPair(3, 3);
+//		bs.addChipPair(cp);
+//		cp = new ChipPair(1, 1);
+//		bs.addChipPair(cp);
+//		ArrayList<BuildingState> nextStates = bs.getValidNextStates();
+//		
+//		assertEquals(2, nextStates.size());
+//				
+//		BuildingState expectedState = new BuildingState(3);
+//		cp = new ChipPair(3, 2);
+//		expectedState.addChipPair(cp);
+//		cp = new ChipPair(3, 3);
+//		expectedState.addChipPair(cp);
+//		cp = new ChipPair(1, 1);
+//		expectedState.addChipPair(cp);
+//		assertTrue(nextStatesContainsState(nextStates, expectedState));
+//				
+//		expectedState = new BuildingState(1);
+//		cp = new ChipPair(1, 2);
+//		expectedState.addChipPair(cp);
+//		cp = new ChipPair(3, 3);
+//		expectedState.addChipPair(cp);
+//		cp = new ChipPair(1, 1);
+//		expectedState.addChipPair(cp);
+//		assertTrue(nextStatesContainsState(nextStates, expectedState));		
+//	}
+	
 	private boolean nextStatesContainsState(ArrayList<BuildingState> nextStates, BuildingState expectedState) {
 		
 		System.out.println("looking for " + expectedState.toString() + " in states " + nextStates.toString());
