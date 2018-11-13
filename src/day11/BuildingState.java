@@ -54,7 +54,7 @@ public class BuildingState implements Cloneable {
 							bs = (BuildingState) clone();
 							bs.getChipPairs().remove(cpIdx);
 
-							if (!microchipWouldBeLeftOnFloorWithAnotherGenerator(bs, cp)) {
+							if (!generatorsMicrochipWouldBeLeftOnFloorWithAnotherGenerator(bs, cp) && !generatorWouldMoveToFloorWithIsolatedMicrochip(bs, cp, bs.elevatorFloor - 1)) {
 								ChipPair newFp1 = new ChipPair(cp.getGeneratorFloor() - 1, cp.getMicrochipFloor());
 
 								bs.addChipPair(newFp1);
@@ -85,7 +85,7 @@ public class BuildingState implements Cloneable {
 							bs = (BuildingState) clone();
 							bs.getChipPairs().remove(cpIdx);
 
-							if (!microchipWouldBeLeftOnFloorWithAnotherGenerator(bs, cp)) {
+							if (!generatorsMicrochipWouldBeLeftOnFloorWithAnotherGenerator(bs, cp) && !generatorWouldMoveToFloorWithIsolatedMicrochip(bs, cp, bs.elevatorFloor + 1)) {
 								ChipPair newFp1 = new ChipPair(cp.getGeneratorFloor() + 1, cp.getMicrochipFloor());
 
 								bs.addChipPair(newFp1);
@@ -116,7 +116,20 @@ public class BuildingState implements Cloneable {
 		return nextStates;
 	}
 
-	private boolean microchipWouldBeLeftOnFloorWithAnotherGenerator(BuildingState bs, ChipPair cp) {
+	private boolean generatorWouldMoveToFloorWithIsolatedMicrochip(BuildingState bs, ChipPair chipPairForGeneratorThatIsMoving, int destinatationFloor) {
+		for (ChipPair cp : bs.getChipPairs()) {
+			if (cp.getMicrochipFloor() == destinatationFloor && !cp.equals(chipPairForGeneratorThatIsMoving)  && !microchipAndGeneratorBalanced(cp)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean microchipAndGeneratorBalanced(ChipPair cp) {
+		return cp.getGeneratorFloor() == cp.getMicrochipFloor();
+	}
+
+	private boolean generatorsMicrochipWouldBeLeftOnFloorWithAnotherGenerator(BuildingState bs, ChipPair cp) {
 		return floorContainsGenerator(bs, elevatorFloor) && (elevatorFloor == cp.getMicrochipFloor());
 	}
 
