@@ -126,6 +126,7 @@ public class TestBuildingState {
 		cp = new ChipPair(1, 2);
 		expectedState.addChipPair(cp);
 		assertTrue(nextStatesContainsState(nextStates, expectedState));
+	
 	}
 	
 	@Test
@@ -506,7 +507,7 @@ public class TestBuildingState {
 		expectedState.addChipPair(cp);
 		assertTrue(nextStatesContainsState(nextStates, expectedState));
 	}
-	
+
 	@Test
 	public void endGame() {
 		
@@ -530,34 +531,11 @@ public class TestBuildingState {
 		
 		ArrayList<BuildingState> nextStates2 = nextStates.get(0).getValidNextStates();
 		System.out.println(nextStates2.toString());
+
+		ArrayList<BuildingState> nextStates3 = nextStates2.get(1).getValidNextStates();
+		System.out.println(nextStates3.toString());
 		
 	}
-	
-	@Test
-	public void experiment() {
-		
-		BuildingState bs = new BuildingState(2);
-		ChipPair cp; 
-		cp = new ChipPair(2, 3);
-		bs.addChipPair(cp);
-		cp = new ChipPair(2, 3);
-		bs.addChipPair(cp);
-		cp = new ChipPair(2, 3);
-		bs.addChipPair(cp);
-		cp = new ChipPair(2, 3);
-		bs.addChipPair(cp);
-		cp = new ChipPair(2, 1);
-		bs.addChipPair(cp);
-		
-		System.out.println(bs.toString());
-		
-		ArrayList<BuildingState> nextStates = bs.getValidNextStates();
-		System.out.println(nextStates.toString());
-		
-	}
-
-
-	
 	
 	private boolean nextStatesContainsState(ArrayList<BuildingState> nextStates, BuildingState expectedState) {
 		

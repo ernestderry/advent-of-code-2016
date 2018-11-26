@@ -140,28 +140,7 @@ public class BuildingState implements Cloneable {
 		return floorContainsGenerator(newBs, elevatorFloor) && (elevatorFloor == chipPairForGeneratorThatIsMoving.getMicrochipFloor());
 	}
 
-	private ArrayList<ChipPair> getUniqueChipPairs() {
-		ArrayList<ChipPair> uniqueChipPairs = new ArrayList<ChipPair>();
-
-		for (ChipPair cp : getChipPairs()) {
-			if (!uniqueChipPairs.contains(cp)) {
-				uniqueChipPairs.add(cp);
-			}
-		}
-
-		return uniqueChipPairs;
-	}
-
 	private boolean floorContainsGenerator(BuildingState bs, int elevatorFloor) {
-		for (ChipPair cp : bs.getChipPairs()) {
-			if (cp.getGeneratorFloor() == elevatorFloor) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean floorContainsDifferentGenerator(BuildingState bs, ChipPair cpBeingMoved, int elevatorFloor) {
 		for (ChipPair cp : bs.getChipPairs()) {
 			if (cp.getGeneratorFloor() == elevatorFloor) {
 				return true;
