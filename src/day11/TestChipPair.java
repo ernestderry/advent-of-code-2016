@@ -33,5 +33,18 @@ public class TestChipPair {
 		ChipPair pair2 = new ChipPair(1, 3);
 		assertNotEquals(pair, pair2);
 	}	
+	
+	@Test 
+	public void canChangeGeneratorFloorOnChipPair() {
+		ChipPair pair = new ChipPair(1, 2);
+		pair.setGeneratorFloor(2);
+		assertEquals(2, pair.generatorFloor);
+	}
 
+	@Test 
+	public void canChangeMicrochipFloorOnChipPair() {
+		ChipPair pair = new ChipPair(1, 2);
+		pair.setMicrochipFloor(1);
+		assertEquals(1, pair.generatorFloor);
+	}
 }

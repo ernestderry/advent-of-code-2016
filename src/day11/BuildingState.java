@@ -3,6 +3,7 @@ package day11;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class BuildingState implements Cloneable {
 
@@ -39,116 +40,282 @@ public class BuildingState implements Cloneable {
 	public ArrayList<BuildingState> getValidNextStates() {
 
 		ArrayList<BuildingState> nextStates = new ArrayList<BuildingState>();
-		BuildingState bs;
+
 		ArrayList<ChipPair> processedChipPairs = new ArrayList<ChipPair>();
 
 		for (int cpIdx = 0; cpIdx < chipPairs.size(); cpIdx++) {
+
 			ChipPair cp = chipPairs.get(cpIdx);
+			BuildingState newBs;
+			ChipPair newCp;
+
 			if (!processedChipPairs.contains(cp)) {
 
-				if (elevatorFloor == cp.getGeneratorFloor() || elevatorFloor == cp.getMicrochipFloor()) {
-					if (elevatorFloor > 1) {
+				// move up
+				if (elevatorFloor < 4) {
+					if (cp.getGeneratorFloor() == elevatorFloor) {
 
-						if (elevatorFloor == cp.getGeneratorFloor()) {
-
-							bs = (BuildingState) clone();
-							bs.getChipPairs().remove(cpIdx);
-
-							if (generatorCanSafelyMoveToFloor(bs, cp, cp.getGeneratorFloor() - 1)) {
-								ChipPair newFp1 = new ChipPair(cp.getGeneratorFloor() - 1, cp.getMicrochipFloor());
-
-								bs.addChipPair(newFp1);
-								bs.elevatorFloor -= 1;
-								nextStates.add(bs);
+						if (cp.getMicrochipFloor() == elevatorFloor) {
+							// move GN and MC
+							newBs = (BuildingState) clone();
+							newCp = newBs.getChipPairs().get(cpIdx);
+							newCp.setGeneratorFloor(elevatorFloor + 1);
+							newCp.setMicrochipFloor(elevatorFloor + 1);
+							newBs.elevatorFloor += 1;
+							if (validBuildingState(newBs)) {
+								nextStates.add(newBs);
 							}
 						}
 
-						if (elevatorFloor == cp.getMicrochipFloor()) {
-							bs = (BuildingState) clone();
-							bs.getChipPairs().remove(cpIdx);
+						// move GN on own
+						newBs = (BuildingState) clone();
+						newCp = newBs.getChipPairs().get(cpIdx);
+						newCp.setGeneratorFloor(elevatorFloor + 1);
+						newBs.elevatorFloor += 1;
+						if (validBuildingState(newBs)) {
+							nextStates.add(newBs);
+						}
 
-							if (microchipCanSafelyMoveToFloor(bs, cp, elevatorFloor - 1)) {
-								ChipPair newFp2 = new ChipPair(cp.getGeneratorFloor(), cp.getMicrochipFloor() - 1);
+						ArrayList<ChipPair> otherPairsProcessed = new ArrayList<ChipPair>();
+						
+						for (int cpIdx2 = cpIdx + 1; cpIdx2 < chipPairs.size(); cpIdx2++) {
 
-								bs.addChipPair(newFp2);
-								bs.elevatorFloor -= 1;
-								nextStates.add(bs);
+							ChipPair cp2 = chipPairs.get(cpIdx2);
+
+							if (!otherPairsProcessed.contains(cp2)) {
+
+								if (cp2.getGeneratorFloor() == elevatorFloor) {
+									// move GN with another pair's GN
+									newBs = (BuildingState) clone();
+									newCp = newBs.getChipPairs().get(cpIdx);
+									newCp.setGeneratorFloor(elevatorFloor + 1);
+									newCp = newBs.getChipPairs().get(cpIdx2);
+									newCp.setGeneratorFloor(elevatorFloor + 1);
+									newBs.elevatorFloor += 1;
+									if (validBuildingState(newBs)) {
+										nextStates.add(newBs);
+									}
+								}
+
+								if (cp2.getMicrochipFloor() == elevatorFloor) {
+									// move GN with another pair's MC
+									newBs = (BuildingState) clone();
+									newCp = newBs.getChipPairs().get(cpIdx);
+									newCp.setGeneratorFloor(elevatorFloor + 1);
+									newCp = newBs.getChipPairs().get(cpIdx2);
+									newCp.setMicrochipFloor(elevatorFloor + 1);
+									newBs.elevatorFloor += 1;
+									if (validBuildingState(newBs)) {
+										nextStates.add(newBs);
+									}
+								}
+
+								otherPairsProcessed.add(cp2);
 
 							}
 						}
 					}
 
-					if (elevatorFloor < 4) {
+					if (cp.getMicrochipFloor() == elevatorFloor) {
 
-						if (elevatorFloor == cp.getGeneratorFloor()) {
-							bs = (BuildingState) clone();
-							bs.getChipPairs().remove(cpIdx);
-
-							if (generatorCanSafelyMoveToFloor(bs, cp, cp.getGeneratorFloor() + 1)) {
-								ChipPair newFp1 = new ChipPair(cp.getGeneratorFloor() + 1, cp.getMicrochipFloor());
-
-								bs.addChipPair(newFp1);
-								bs.elevatorFloor += 1;
-
-								nextStates.add(bs);
-							}
+						// move MC on own
+						newBs = (BuildingState) clone();
+						newCp = newBs.getChipPairs().get(cpIdx);
+						newCp.setMicrochipFloor(elevatorFloor + 1);
+						newBs.elevatorFloor += 1;
+						if (validBuildingState(newBs)) {
+							nextStates.add(newBs);
 						}
 
-						if (elevatorFloor == cp.getMicrochipFloor()) {
-							bs = (BuildingState) clone();
-							bs.getChipPairs().remove(cpIdx);
+						ArrayList<ChipPair> otherPairsProcessed = new ArrayList<ChipPair>();
+						for (int cpIdx2 = cpIdx + 1; cpIdx2 < chipPairs.size(); cpIdx2++) {
 
-							if (microchipCanSafelyMoveToFloor(bs, cp, elevatorFloor + 1)) {
-								ChipPair newFp2 = new ChipPair(cp.getGeneratorFloor(), cp.getMicrochipFloor() + 1);
+							ChipPair cp2 = chipPairs.get(cpIdx2);
 
-								bs.addChipPair(newFp2);
-								bs.elevatorFloor += 1;
-								nextStates.add(bs);
+							if (!otherPairsProcessed.contains(cp2)) {
+
+								if (cp2.getGeneratorFloor() == elevatorFloor) {
+									// move MC with another pair's GN
+									newBs = (BuildingState) clone();
+									newCp = newBs.getChipPairs().get(cpIdx);
+									newCp.setMicrochipFloor(elevatorFloor + 1);
+									newCp = newBs.getChipPairs().get(cpIdx2);
+									newCp.setGeneratorFloor(elevatorFloor + 1);
+									newBs.elevatorFloor += 1;
+									if (validBuildingState(newBs)) {
+										nextStates.add(newBs);
+									}
+								}
+
+								if (cp2.getMicrochipFloor() == elevatorFloor) {
+									// move MC with another pair's MC
+									newBs = (BuildingState) clone();
+									newCp = newBs.getChipPairs().get(cpIdx);
+									newCp.setMicrochipFloor(elevatorFloor + 1);
+									newCp = newBs.getChipPairs().get(cpIdx2);
+									newCp.setMicrochipFloor(elevatorFloor + 1);
+									newBs.elevatorFloor += 1;
+									if (validBuildingState(newBs)) {
+										nextStates.add(newBs);
+									}
+								}
+
+								otherPairsProcessed.add(cp2);
 							}
 						}
 					}
 				}
+				
+				
+				//move down
+				if (elevatorFloor > 1) {
+					if (cp.getGeneratorFloor() == elevatorFloor) {
+
+						if (cp.getMicrochipFloor() == elevatorFloor) {
+							// move GN and MC
+							newBs = (BuildingState) clone();
+							newCp = newBs.getChipPairs().get(cpIdx);
+							newCp.setGeneratorFloor(elevatorFloor - 1);
+							newCp.setMicrochipFloor(elevatorFloor - 1);
+							newBs.elevatorFloor -= 1;
+							if (validBuildingState(newBs)) {
+								nextStates.add(newBs);
+							}
+						}
+
+						// move GN on own
+						newBs = (BuildingState) clone();
+						newCp = newBs.getChipPairs().get(cpIdx);
+						newCp.setGeneratorFloor(elevatorFloor - 1);
+						newBs.elevatorFloor -= 1;
+						if (validBuildingState(newBs)) {
+							nextStates.add(newBs);
+						}
+
+						ArrayList<ChipPair> otherPairsProcessed = new ArrayList<ChipPair>();						
+						for (int cpIdx2 = cpIdx + 1; cpIdx2 < chipPairs.size(); cpIdx2++) {
+
+							ChipPair cp2 = chipPairs.get(cpIdx2);
+
+							if (!otherPairsProcessed.contains(cp2)) {
+
+								if (cp2.getGeneratorFloor() == elevatorFloor) {
+									// move GN with another pair's GN
+									newBs = (BuildingState) clone();
+									newCp = newBs.getChipPairs().get(cpIdx);
+									newCp.setGeneratorFloor(elevatorFloor - 1);
+									newCp = newBs.getChipPairs().get(cpIdx2);
+									newCp.setGeneratorFloor(elevatorFloor - 1);
+									newBs.elevatorFloor -= 1;
+									if (validBuildingState(newBs)) {
+										nextStates.add(newBs);
+									}
+								}
+
+								if (cp2.getMicrochipFloor() == elevatorFloor) {
+									// move GN with another pair's MC
+									newBs = (BuildingState) clone();
+									newCp = newBs.getChipPairs().get(cpIdx);
+									newCp.setGeneratorFloor(elevatorFloor - 1);
+									newCp = newBs.getChipPairs().get(cpIdx2);
+									newCp.setMicrochipFloor(elevatorFloor - 1);
+									newBs.elevatorFloor -= 1;
+									if (validBuildingState(newBs)) {
+										nextStates.add(newBs);
+									}
+								}
+
+								otherPairsProcessed.add(cp2);
+
+							}
+						}
+					}
+
+					if (cp.getMicrochipFloor() == elevatorFloor) {
+
+						// move MC on own
+						newBs = (BuildingState) clone();
+						newCp = newBs.getChipPairs().get(cpIdx);
+						newCp.setMicrochipFloor(elevatorFloor - 1);
+						newBs.elevatorFloor -= 1;
+						if (validBuildingState(newBs)) {
+							nextStates.add(newBs);
+						}
+
+						ArrayList<ChipPair> otherPairsProcessed = new ArrayList<ChipPair>();
+						for (int cpIdx2 = cpIdx + 1; cpIdx2 < chipPairs.size(); cpIdx2++) {
+
+							ChipPair cp2 = chipPairs.get(cpIdx2);
+
+							if (!otherPairsProcessed.contains(cp2)) {
+
+								if (cp2.getGeneratorFloor() == elevatorFloor) {
+									// move MC with another pair's GN
+									newBs = (BuildingState) clone();
+									newCp = newBs.getChipPairs().get(cpIdx);
+									newCp.setMicrochipFloor(elevatorFloor - 1);
+									newCp = newBs.getChipPairs().get(cpIdx2);
+									newCp.setGeneratorFloor(elevatorFloor - 1);
+									newBs.elevatorFloor -= 1;
+									if (validBuildingState(newBs)) {
+										nextStates.add(newBs);
+									}
+								}
+
+								if (cp2.getMicrochipFloor() == elevatorFloor) {
+									// move MC with another pair's MC
+									newBs = (BuildingState) clone();
+									newCp = newBs.getChipPairs().get(cpIdx);
+									newCp.setMicrochipFloor(elevatorFloor - 1);
+									newCp = newBs.getChipPairs().get(cpIdx2);
+									newCp.setMicrochipFloor(elevatorFloor - 1);
+									newBs.elevatorFloor -= 1;
+									if (validBuildingState(newBs)) {
+										nextStates.add(newBs);
+									}
+								}
+
+								otherPairsProcessed.add(cp2);
+							}
+						}
+					}
+				}				
+
 				processedChipPairs.add(cp);
+				
 			}
 		}
 
+		//return chip pairs in states in sorted order.
+		for (BuildingState bs : nextStates) {
+			Collections.sort(bs.getChipPairs());
+		}
+		
 		return nextStates;
 	}
 
-	private boolean generatorCanSafelyMoveToFloor(BuildingState bs, ChipPair cp, int newElevatorFloor) {
-		return !generatorsMicrochipWouldBeLeftOnFloorWithAnotherGenerator(bs, cp) && !generatorWouldMoveToFloorWithIsolatedMicrochip(bs, cp, newElevatorFloor);
-	}
+	private boolean validBuildingState(BuildingState newBs) {
 
-	private boolean microchipCanSafelyMoveToFloor(BuildingState bs, ChipPair cp, int newElevatorFloor) {
-		return !floorContainsGenerator(bs, newElevatorFloor) || cp.getGeneratorFloor() == newElevatorFloor;
-	}
+		ArrayList<ChipPair> pairsToCheck = newBs.getChipPairs();
+		for (ChipPair cp : pairsToCheck) {
 
-	private boolean generatorWouldMoveToFloorWithIsolatedMicrochip(BuildingState newBs, ChipPair chipPairForGeneratorThatIsMoving, int destinatationFloor) {
-		for (ChipPair cp : newBs.getChipPairs()) {
-			if (cp.getMicrochipFloor() == destinatationFloor && !cp.equals(chipPairForGeneratorThatIsMoving)  && !microchipAndGeneratorBalanced(cp)) {
-				return true;
+			if (!microchipAndGeneratorBalanced(cp)) {
+
+				for (ChipPair cp2 : newBs.getChipPairs()) {
+					if (cp != cp2 && cp2.getGeneratorFloor() == cp.getMicrochipFloor()) {
+						return false;
+					}
+				}
 			}
 		}
-		return false;
+
+		return true;
 	}
 
 	private boolean microchipAndGeneratorBalanced(ChipPair cp) {
 		return cp.getGeneratorFloor() == cp.getMicrochipFloor();
 	}
 
-	private boolean generatorsMicrochipWouldBeLeftOnFloorWithAnotherGenerator(BuildingState newBs, ChipPair chipPairForGeneratorThatIsMoving) {
-		return floorContainsGenerator(newBs, elevatorFloor) && (elevatorFloor == chipPairForGeneratorThatIsMoving.getMicrochipFloor());
-	}
-
-	private boolean floorContainsGenerator(BuildingState bs, int elevatorFloor) {
-		for (ChipPair cp : bs.getChipPairs()) {
-			if (cp.getGeneratorFloor() == elevatorFloor) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	@Override
 	public String toString() {
 		String printString = "{" + elevatorFloor + " ";
